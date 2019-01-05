@@ -1,0 +1,37 @@
+{
+    "variables" : {
+        "zone" : "ZONE ID",
+        "project" : "PROJECT ID",
+        "source_image" : "centos-7-v20181210",
+        "ssh_username" : "packer",
+        "credentials_path" : "PATH/account.json"
+    },
+    "builders" : [
+        {
+            "type": "googlecompute",
+            "account_file": "{{user `credentials_path`}}",
+            "project_id": "{{user `project`}}",
+            "source_image": "{{user `source_image`}}",
+            "ssh_username": "{{user `ssh_username`}}",
+            "zone": "{{user `zone`}}",
+            "image_name" : "nexus-v3-14-0-04"
+          }
+    ],
+    "provisioners" : [
+        {
+            "type" : "file",
+            "source" : "./nexus.rc",
+            "destination" : "/tmp/nexus.rc"
+        },
+        {
+            "type" : "file",
+            "source" : "./repository.json",
+            "destination" : "/tmp/repository.json"
+        },
+        {
+            "type" : "shell",
+            "script" : "./setup.sh",
+            "execute_command" : "sudo -E -S sh '{{ .Path }}'"
+        }
+    ]
+}

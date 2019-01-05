@@ -1,0 +1,16 @@
+- name: Swarm Init
+  command: docker swarm init --advertise-addr {{ inventory_hostname }}
+
+- name: Get Worker Token
+  command: docker swarm join-token worker -q
+  register: worker_token
+
+- name: Show Worker Token
+  debug: var=worker_token.stdout
+
+- name: Manager Token
+  command: docker swarm join-token manager -q
+  register: manager_token
+
+- name: Show Manger Token
+  debug: var=manager_token.stdout

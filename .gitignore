@@ -1,0 +1,7 @@
+account.json
+variables.tfvars
+*.tfstate
+*.retry
+.terraform
+*.backup
+*.retry
